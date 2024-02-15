@@ -1,0 +1,17 @@
+.h-screen-custom{
+    height: calc(100vh - 100px);
+}
+
+
+.resize-handle-left,
+.resize-handle-right {
+  position: absolute;
+  height: 40px;
+  top: 40%;
+  cursor: col-resize;
+  width: 4px;
+}
+
+.resize-handle-right {
+    right: 0;
+  }

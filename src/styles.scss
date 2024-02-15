@@ -1,1 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+
+
+:root{
+    --primary-color:#14637b;
+    --sec-color:#7babbc;
+}
+
+
+@font-face {
+    font-family: Plus Jakarta Sans;
+    src:url("/assets/fonts/PlusJakartaSans-Regular.ttf") format("truetype"),
+    url("/assets/font/PlusJakartaSans-Medium.ttf") format("truetype"),
+    url("/assets/font/PlusJakartaSans-Semibold.ttf") format("truetype"),
+    url("/assets/font/PlusJakartaSans-Bold.ttf") format("truetype");
+    
+  }
+
+
+*:not(mat-icon) {
+    font-family: "Plus Jakarta Sans",sans-serif !important;
+    word-spacing: 0.1rem !important;
+    -webkit-font-smoothing: antialiased !important;
+    font-smooth: antialiased!important;
+
+}
+
+input[type="text"] {
+    font-family: "Plus Jakarta Sans",sans-serif !important;
+    word-spacing: 0.1rem !important;
+    -webkit-font-smoothing: antialiased !important;
+    font-smooth: antialiased!important;
+
+}
+
+
+.bg-primary-color{
+    background-color: var(--primary-color);
+}
+
+*{
+    transition: width 0.02s ease!important;
+}
