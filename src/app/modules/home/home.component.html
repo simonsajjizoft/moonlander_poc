@@ -1,6 +1,6 @@
 <div class="container h-screen w-full bg-gray-100">
     <div class="hdr bg-primary-color text-white  w-full px-3 flex items-center justify-between">
-        <div class="font-medium text-xl py-4">GS1 Moonlander Console</div>
+        <div class="font-medium text-xl py-4">Console</div>
         <div class="rounded-full bg-cyan-700 w-7 h-7 flex justify-center items-center text-white px-1.5 font-semibold py-1.5 text-base ring-cyan-600 ring-1 ">S</div>
     </div>
     <div class="header px-3 py-2 flex justify-between text-sm border-b-2">
@@ -15,7 +15,7 @@
                 <div  *ngIf="layoutDropdown" class="z-10 absolute top-8 right-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 ">
                     <ul class=" text-sm text-gray-700 px-1 py-1 " aria-labelledby="dropdownDelayButton">
                       <li *ngFor="let item of layouts"  (click)="selectLayout(item?.id)" [ngClass]="item?.selected ? 'bg-gray-100' : ''" class="block px-3 py-1 rounded-md hover:bg-gray-100 my-0.5" >
-                        <a  >{{item?.name}}</a>
+                        <a  >  {{item?.name}}</a>
                       </li>
                      
                     </ul>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="w-full flex h-screen-custom bg-white">
-        <div class="w-1/4 min-w-72 border-gray-300  border-r-2 px-3 bg-white sidebar relative" [style.width.px]="sidebarWidth" [enableGhostResize]="true" mwlResizable  (resizeEnd)="onResizeEnd($event)">
+        <div class="w-1/4 min-w-32 border-gray-300  border-r-2 px-3 bg-white sidebar relative" [style.width.px]="sidebarWidth" [enableGhostResize]="true" mwlResizable  (resizing)="onResize($event)"   >
             <div
             class="resize-handle-right hover:border-r-4 hover:border-l-2 hover:border-slate-200 border-slate-300 border-r-4 border-l-2  -mr-1 "
             mwlResizeHandle
@@ -31,7 +31,7 @@
           ></div>
             hii
         </div>
-        <div class="  px-3 resize-x bg-white overflow-hidden" [ngSwitch]="layoutView.view" style="flex:1">
+        <div class="  px-3 resize-x bg-white overflow-hidden" [ngSwitch]="layoutView.view"  style="flex:1">
             <app-list-view [items]="items" *ngSwitchCase="'list'"></app-list-view>
             <app-card-view [items]="items" *ngSwitchCase="'card'"></app-card-view>
             <app-detail-view [items]="items" *ngSwitchCase="'detail'"></app-detail-view>

@@ -25,6 +25,7 @@ export class HomeComponent {
     {name:'Pharmaceutical Compounding - Bases'}
   ];
   sidebarWidth:Number|any;
+  contentWidth:Number|any;
   @ViewChild('layoutModal') layoutModal:ElementRef| any;
   @HostListener('document:click', ['$event.target'])
   onClick(target: any) {
@@ -51,11 +52,12 @@ export class HomeComponent {
     this.layoutDropdown = false;
   }
 
-  onResizeEnd(event: ResizeEvent): void {
+  onResize(event: ResizeEvent): void {
     console.log('Element was resized', event);
-    // You can handle the resize event here, e.g., update sidebar width in your component
-    // For example:
     this.sidebarWidth = event.rectangle.width;
   }
+
+
+
 
 }

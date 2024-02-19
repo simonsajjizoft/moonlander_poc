@@ -1,5 +1,5 @@
-.h-screen-custom{
-    height: calc(100vh - 100px);
+.h-screen-custom {
+  height: calc(100vh - 100px);
 }
 
 
@@ -13,5 +13,9 @@
 }
 
 .resize-handle-right {
-    right: 0;
-  }
+  right: 0;
+}
+
+.resize-x{
+  resize: both!important;
+}

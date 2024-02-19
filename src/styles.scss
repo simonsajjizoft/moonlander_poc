@@ -43,11 +43,6 @@ input[type="text"] {
     background-color: var(--primary-color);
 }
 
-*{
-    transition-property: width;
-  transition: 0.098s linear;
-  transition-delay: 0.03s;
-}
 
 th, td, table{
     transition-property: width;
