@@ -11,8 +11,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ColumnResizeDirective } from 'src/app/directives/column-resize.directive';
-
-
+import { MaterialModule } from '../material/material.module';
+import {MatTreeModule} from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -30,8 +32,10 @@ import { ColumnResizeDirective } from 'src/app/directives/column-resize.directiv
     FormsModule,
     RouterModule,
     ResizableModule,
-
-   
+    MaterialModule,
+    MatTreeModule,
+    MatIconModule,
+    MatButtonModule
   ],
   exports:[
     CommonModule,
@@ -44,7 +48,11 @@ import { ColumnResizeDirective } from 'src/app/directives/column-resize.directiv
     CardViewComponent,
     RouterModule,
     ResizableModule,
-    ColumnResizeDirective
+    ColumnResizeDirective,
+    MatTreeModule,
+    MaterialModule,
+    MatIconModule,
+    MatButtonModule
   ]
 })
 export class SharedModule { }

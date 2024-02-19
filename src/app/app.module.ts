@@ -20,7 +20,7 @@ import { ColumnResizeDirective } from './directives/column-resize.directive';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

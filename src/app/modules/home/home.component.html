@@ -29,7 +29,7 @@
             mwlResizeHandle
             [resizeEdges]="{ right: true }"
           ></div>
-            hii
+           <div class="overflow-hidden -z-10 text-sm font-medium py-4 px-4"><app-tree-view></app-tree-view></div>
         </div>
         <div class="  px-3 resize-x bg-white overflow-hidden" [ngSwitch]="layoutView.view"  style="flex:1">
             <app-list-view [items]="items" *ngSwitchCase="'list'"></app-list-view>
