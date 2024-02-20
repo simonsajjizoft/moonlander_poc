@@ -15,7 +15,7 @@
                 <div  *ngIf="layoutDropdown" class="z-10 absolute top-8 right-0 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 ">
                     <ul class=" text-sm text-gray-700 px-1 py-1 " aria-labelledby="dropdownDelayButton">
                       <li *ngFor="let item of layouts"  (click)="selectLayout(item?.id)" [ngClass]="item?.selected ? 'bg-gray-100' : ''" class="block px-3 py-1 rounded-md hover:bg-gray-100 my-0.5" >
-                        <a  >  {{item?.name}}</a>
+                        <a class="flex items-center gap-1.5" ><div class="w-3 h-3"><img [src]="item?.img" class="w-full h-full" alt="" srcset=""></div>  {{item?.name}}</a>
                       </li>
                      
                     </ul>

@@ -9,9 +9,9 @@ import { ResizeEvent } from 'angular-resizable-element';
 export class HomeComponent {
   layoutDropdown:boolean = false;
   layouts = [
-    {id:1,view:'card',selected:false,name:'Large Icons'},
-    {id:2,view:'list',selected:true,name:'List'},
-    {id:3,view:'detail',selected:false,name:'Detail'},
+    {id:1,view:'card',selected:false,name:'Large Icons',img:'assets/icons/folder.png'},
+    {id:2,view:'list',selected:true,name:'List',img:'assets/icons/list.png'},
+    {id:3,view:'detail',selected:false,name:'Detail',img:'assets/icons/detail.png'},
   ];
   layoutView = this.layouts[1];
   items = [
@@ -56,8 +56,6 @@ export class HomeComponent {
     console.log('Element was resized', event);
     this.sidebarWidth = event.rectangle.width;
   }
-
-
 
 
 }

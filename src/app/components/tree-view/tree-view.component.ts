@@ -12,54 +12,52 @@ import {map} from 'rxjs';
  */
 export class GameNode {
   children: BehaviorSubject<GameNode[]>;
-  constructor(public item: string, children?: GameNode[], public parent?: GameNode) {
+  constructor(public item: any, children?: GameNode[], public parent?: GameNode) {
     this.children = new BehaviorSubject(children === undefined ? [] : children);
   }
 }
 
 const TREE_DATA = [
-  new GameNode('Alcohol Information Module', [
-    new GameNode('Factorio'),
-    new GameNode('Oxyge'),
+  new GameNode({name:'Alcohol Information Module',id:124}, [
+    new GameNode({name:'Alcohol Beverage Container',id:324}),
+    new GameNode({name:'Alcohol Other Informationetc',id:624}),
   ]),
-  new GameNode('Allergen Information Module', [
-    new GameNode(`Don't Starve`, [
-      new GameNode(`Reg=`),
-      new GameNode(`Together`),
-      new GameNode(`Shipwrecked`)
+  new GameNode({name:'Allergen Information Module',id:784}, [
+    new GameNode({name:'Allergen Container Module',id:6}, [
+      new GameNode({name:'Process Type',id:7}),
+      new GameNode({name:'Shape',id:33}),
+      new GameNode({name:'Material',id:89})
     ]),
-    new GameNode('Terraria'),
-    new GameNode('Starbound'),
-    new GameNode('Dungeon o')
+    new GameNode({name:'Terratial',id:894}),
+    new GameNode({name:'Uiif Information Module',id:899}),
+    new GameNode({name:'Iioqf Information Module',id:901})
   ]),
-  new GameNode('Animal Feeding Module', [
-    new GameNode('Overcooked')
+  new GameNode({name:'Ppow Information Module',id:1009}, [
+    new GameNode({name:'Overcooked',id:1010})
   ]),
-  new GameNode('Strategy', [
-    new GameNode('Rise to ruins')
+  new GameNode({name:'Strategy',id:500}, [
+    new GameNode({name:'Stragey egwg Module',id:524})
   ]),
-  new GameNode('Battery Information Module', [
-    new GameNode('Magicka', [
-      new GameNode('Magicka 1'),
-      new GameNode('Magicka 2')
+  new GameNode({name:'Battery Information Module',id:724}, [
+    new GameNode({name:'Battery Capacity Module',id:788}, [
+      new GameNode({name:'Size  Module',id:86}),
     ])
   ]),
-  new GameNode('Certification Module', [
-    new GameNode('Magicka', [
-      new GameNode('Magicka 1'),
-      new GameNode('Magicka 2')
+  new GameNode({name:'Certificate  Module',id:200}, [
+    new GameNode({name:'Compliance Module',id:201}, [
+      new GameNode({name:'Policy Module',id:202}),
+      new GameNode({name:'Terms Module',id:205})
     ])
   ]),
-  new GameNode('Chemical Regulation Information Module', [
-    new GameNode('Magicka', [
-      new GameNode('Magicka 1'),
-      new GameNode('Magicka 2')
+  new GameNode({name:'Chemical Information Module',id:404}, [
+    new GameNode({name:'Chemical Regulation Module',id:405}, [
+      new GameNode({name:'Substances Mix Module',id:406}),
     ])
   ]),
-  new GameNode('Consumer Instructions Mod', [
-    new GameNode('Magicka', [
-      new GameNode('Magicka 1'),
-      new GameNode('Magicka 2')
+  new GameNode({name:'Consumer Information Module',id:670}, [
+    new GameNode({name:'Consumer Information Module',id:671}, [
+      new GameNode({name:'Consumer Instruction Module',id:678}),
+      new GameNode({name:'Steps Information Module',id:679})
     ])
   ]),
 ];
@@ -75,6 +73,7 @@ export class TreeViewComponent {
   treeControl: NestedTreeControl<GameNode>;
   activeNode:any;
   dataSource: MatTreeNestedDataSource<GameNode>;
+  prevExpansionModel:any;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {
     this.treeControl = new NestedTreeControl<GameNode>(this.getChildren);
@@ -90,10 +89,26 @@ export class TreeViewComponent {
     return node.children.value.length > 0;
   }
 
-  expandNode(node:any){
+  clickNode(node:any){
     this.activeNode = node;
-    console.log(this.activeNode)
+    console.log(this.activeNode);
+    console.log(this.treeControl.expansionModel.selected);
+    this.prevExpansionModel = this.treeControl.expansionModel.selected;
 
+  }
+
+  resetTree(){
+    this.initTree();
+  }
+
+  initTree(){
+    this.treeControl = new NestedTreeControl<GameNode>(this.getChildren);
+    this.dataSource = new MatTreeNestedDataSource();
+    this.dataSource.data = TREE_DATA;
+  }
+
+  getPrevExpansionModel(){
+    this.prevExpansionModel.forEach((object:any) => this.treeControl.expand(object));
   }
 
 }
