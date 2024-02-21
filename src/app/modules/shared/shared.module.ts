@@ -15,6 +15,8 @@ import { MaterialModule } from '../material/material.module';
 import {MatTreeModule} from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { TreeDynamicComponent } from 'src/app/components/tree-dynamic/tree-dynamic.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { MatButtonModule } from '@angular/material/button';
     ListViewComponent,
     DetailViewComponent,
     CardViewComponent,
-    ColumnResizeDirective
+    ColumnResizeDirective,
+    TreeDynamicComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -35,7 +39,9 @@ import { MatButtonModule } from '@angular/material/button';
     MaterialModule,
     MatTreeModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressBarModule
+
   ],
   exports:[
     CommonModule,
@@ -52,7 +58,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatTreeModule,
     MaterialModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    TreeDynamicComponent,
+    MatProgressBarModule
   ]
 })
 export class SharedModule { }
