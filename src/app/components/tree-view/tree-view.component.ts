@@ -1,65 +1,33 @@
-import {ChangeDetectorRef, Component, Injectable} from '@angular/core';
+import {ChangeDetectorRef, Component, Injectable, SimpleChanges} from '@angular/core';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlattener, MatTreeNestedDataSource} from '@angular/material/tree';
 import {CollectionViewer, SelectionChange} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {Observable} from 'rxjs';
 import {merge} from 'rxjs';
 import {map} from 'rxjs';
 
-/**
- * Node for game
- */
-export class GameNode {
-  children: BehaviorSubject<GameNode[]>;
-  constructor(public item: any, children?: GameNode[], public parent?: GameNode) {
-    this.children = new BehaviorSubject(children === undefined ? [] : children);
-  }
+export interface ModulesNode {
+  name: string;
+  icon?: string;
+  children?: ModulesNode[];
+  isCurrentNodeRoot?: boolean;
+  isCurrentNodeSegment?: boolean;
+  isCurrentNodeFamily?: boolean;
+  isCurrentNodeIncidentType?: boolean;
+  isCurrentNodeIncidentAction?: boolean;
+  parent?:ModulesNode[];
+  ok?:boolean;
+  expandable:boolean
 }
 
-const TREE_DATA = [
-  new GameNode({name:'Alcohol Information Module',id:124}, [
-    new GameNode({name:'Alcohol Beverage Container',id:324}),
-    new GameNode({name:'Alcohol Other Informationetc',id:624}),
-  ]),
-  new GameNode({name:'Allergen Information Module',id:784}, [
-    new GameNode({name:'Allergen Container Module',id:6}, [
-      new GameNode({name:'Process Type',id:7}),
-      new GameNode({name:'Shape',id:33}),
-      new GameNode({name:'Material',id:89})
-    ]),
-    new GameNode({name:'Terratial',id:894}),
-    new GameNode({name:'Uiif Information Module',id:899}),
-    new GameNode({name:'Iioqf Information Module',id:901})
-  ]),
-  new GameNode({name:'Ppow Information Module',id:1009}, [
-    new GameNode({name:'Overcooked',id:1010})
-  ]),
-  new GameNode({name:'Strategy',id:500}, [
-    new GameNode({name:'Stragey egwg Module',id:524})
-  ]),
-  new GameNode({name:'Battery Information Module',id:724}, [
-    new GameNode({name:'Battery Capacity Module',id:788}, [
-      new GameNode({name:'Size  Module',id:86}),
-    ])
-  ]),
-  new GameNode({name:'Certificate  Module',id:200}, [
-    new GameNode({name:'Compliance Module',id:201}, [
-      new GameNode({name:'Policy Module',id:202}),
-      new GameNode({name:'Terms Module',id:205})
-    ])
-  ]),
-  new GameNode({name:'Chemical Information Module',id:404}, [
-    new GameNode({name:'Chemical Regulation Module',id:405}, [
-      new GameNode({name:'Substances Mix Module',id:406}),
-    ])
-  ]),
-  new GameNode({name:'Consumer Information Module',id:670}, [
-    new GameNode({name:'Consumer Information Module',id:671}, [
-      new GameNode({name:'Consumer Instruction Module',id:678}),
-      new GameNode({name:'Steps Information Module',id:679})
-    ])
-  ]),
+const TREE_DATA: ModulesNode[] = [
+  {
+    name: 'Modules',
+    icon: '',
+    isCurrentNodeRoot: true,
+    expandable:true
+  }
 ];
 
 @Component({
@@ -68,45 +36,182 @@ const TREE_DATA = [
   styleUrls: ['./tree-view.component.scss']
 })
 export class TreeViewComponent {
-  recursive: boolean = false;
-  levels = new Map<GameNode, number>();
-  treeControl: NestedTreeControl<GameNode>;
-  activeNode:any;
-  dataSource: MatTreeNestedDataSource<GameNode>;
+  treeControl = new NestedTreeControl<ModulesNode>(node => node.children);
+  dataSource:any = new MatTreeNestedDataSource<ModulesNode>();
+  UnPublishedDataSource = new MatTreeNestedDataSource<ModulesNode>();
+  activeNode;
+  subscription = new Subscription;
+  treeLoader:boolean|any;
+  currentExpandedNode:any;
+  listExpandedNodes = [];
+  loader:boolean|any; 
   prevExpansionModel:any;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {
-    this.treeControl = new NestedTreeControl<GameNode>(this.getChildren);
-    this.dataSource = new MatTreeNestedDataSource();
+  constructor(private cdr: ChangeDetectorRef) {
     this.dataSource.data = TREE_DATA;
+    this.activeNode = TREE_DATA[0];
+    this.populateTree(TREE_DATA[0]);
+    // this.toggleNode(TREE_DATA[0]);
+    // this.changeActiveNode.emit(this.activeNode);
   }
 
-  getChildren = (node: GameNode) => {
-    return node.children;
-  };
+  ngOnInit(): void { }
 
-  hasChildren = (index: number, node: GameNode) => {
-    return node.children.value.length > 0;
-  }
+  ngOnChanges(changes:SimpleChanges){}
 
-  clickNode(node:any){
-    this.activeNode = node;
-    console.log(this.activeNode);
-    console.log(this.treeControl.expansionModel.selected);
+  resetTree(){ }
+
+  hasChild = (_: number, node: ModulesNode) => !!node.children && node.children.length > 0 || (node?.expandable);
+
+  toggleNode(node: ModulesNode) {
+    if(this.treeControl.isExpanded(node)){
+      this.removenodeFromExpandedList(node);
+      this.treeControl.collapse(node);
+    } 
+    else this.expand(node);
     this.prevExpansionModel = this.treeControl.expansionModel.selected;
-
   }
 
-  resetTree(){
-    this.initTree();
+  expand(node:any){
+    this.populate(node);
+    this.currentExpandedNode = node;
+    // this.addNodetoListofExpandedNodes(node);
+    this.treeControl.expand(node);
   }
 
-  initTree(){
-    this.treeControl = new NestedTreeControl<GameNode>(this.getChildren);
-    this.dataSource = new MatTreeNestedDataSource();
-    this.dataSource.data = TREE_DATA;
+  refreshTreeData() {
+    const data = this.dataSource.data;
+    this.dataSource.data = null;
+    this.dataSource.data = data;
   }
 
+  populateSegments(node:any){
+    this.getIncidentSegments(node);
+    this.treeControl.expand(node);
+  }
+
+
+  updateChildren(node:any, children:any) {
+    node.children = children;
+    this.dataSource.data = [...this.dataSource.data];
+    this.refreshTreeData();
+  }
+
+  getIncidentSegments(node:any){
+    this.treeLoader = true;
+    let newchildren = {parent:node, icon: '', isCurrentNodeSegment: true };
+     this.updateChildren(node, newchildren);
+     this.treeLoader = false;
+  }
+
+  
+  setActiveNode(node:any){
+    if(!node?.isCurrentNodeIncidentAction){
+      // this.activeNode = node;
+      // this.expand(node);
+      // if (!node?.children || node?.children?.length == 0) this.fetchNodeDetails(node);
+      // this.changeActiveNode.emit(this.activeNode);
+    }
+  }
+
+  fetchNodeDetails(node:any){
+    this.currentExpandedNode = node;
+    if (!node.children) {
+      node.children = [];
+    }
+    if (node?.isCurrentNodeRoot)   this.getIncidentSegments(node);
+  }
+
+
+  filterSearch(text:string,node:any){
+    this.setChildOk(text,node);
+  }
+
+  setChildOk(text: string, node: any) {
+    text = String(text)?.toLowerCase();
+    node.forEach((x:any) => {
+      x.ok = x.name?.toLowerCase().indexOf(text) >= 0;
+      if (x.parent) this.setParentOk(text, x.parent, x.ok);
+      if (x.children) this.setChildOk(text, x.children);
+    });
+  }
+
+  setParentOk(text:any, node:any, ok:any) {
+    text = String(text)?.toLowerCase();
+    node.ok = ok || node.ok || node.name?.toLowerCase().indexOf(text) >= 0;
+    if (node.parent) this.setParentOk(text, node.parent, node.ok);
+  }
+
+  populateTree(node:any){
+    this.loader = true;
+    this.currentExpandedNode = node;
+    if (!node.children) {
+      node.children = [];
+    }
+    if (node?.isCurrentNodeRoot) {
+      if (!node.children || node?.children?.length == 0)  this.populateAll(node);
+      else this.treeControl.expand(node);
+    }
+  }
+
+  populateAll(node:any){
+    this.treeLoader = true;
+    let data = [{name:'Alcohol Information Module',id:3236262,expandable:true},{name:'Allergen Information Module',id:7888,expandable:true}];
+    let newchildren = data.map((item)=>{
+      return {parent:node,...item };
+     })
+     this.updateChildren(node, newchildren);
+     this.treeLoader = false;
+    this.treeControl.expand(node);
+  }
+
+  populate(node:any){
+    this.treeLoader = true;
+    let data = [{name:'Alcohol Beverage Container',id:5286262},{name:'Material Module',id:9888,expandable:true}];
+    let newchildren = data.map((item)=>{
+      return {parent:node,...item };
+     })
+     this.updateChildren(node, newchildren);
+     this.treeLoader = false;
+    this.treeControl.expand(node);
+  }
+
+ 
+  addNodetoListofExpandedNodes(node:any){
+    // const exists = this.listExpandedNodes.some((item:any) => item.name === node.name && item.id === node.id);
+    // if (!exists) this.listExpandedNodes.push(node);
+  }
+
+  removenodeFromExpandedList(node:any){
+    const index = this.listExpandedNodes.findIndex((obj:any) => {
+      return obj.id === node.id && obj.name === node.name;
+    });
+    if (index !== -1) this.listExpandedNodes.splice(index, 1);
+  }
+
+  loadUpdatedTree() {
+    this.loader = true;
+    const TREE_DATA_: ModulesNode[] = [
+      {
+        name: 'Modules',
+        icon: '/assets/icons/Configuration_Icons/Group 7807.png',
+        isCurrentNodeRoot: true,
+        expandable:true
+      }
+    ];
+    this.dataSource.data = null;
+    this.dataSource.data = TREE_DATA_;
+    this.populateTree(TREE_DATA_[0]);
+  }
+
+  checkNodeExpanded(node:any){
+    this.listExpandedNodes.map((item:any)=>{
+      if(item?.name === node?.name && item?.id === node?.id && item && node)  this.treeControl.expand(node);
+      // if(this.activeNode?.name === node?.name && this.activeNode?.id === node?.id && this.activeNode && node) this.setActiveNode(node);
+    });
+  }
+
+  
   getPrevExpansionModel(){
     this.prevExpansionModel.forEach((object:any) => this.treeControl.expand(object));
   }

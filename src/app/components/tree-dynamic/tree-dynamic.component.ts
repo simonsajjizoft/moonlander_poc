@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule} from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { BehaviorSubject } from 'rxjs';
 
 
 /**
@@ -40,7 +41,8 @@ interface ExampleFlatNode {
   expandable: boolean;
   name: string;
   level: number;
-  id:any
+  id:any;
+  children?:any
 }
 
 @Component({
@@ -70,15 +72,24 @@ export class TreeDynamicComponent {
     node => node.children,
   );
 
-  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
+  dataSource:any = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  
   constructor() {
     this.dataSource.data = TREE_DATA;
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
-  addNode(){
+  addNode(parentNode: ExampleFlatNode) {
+    const newNode: FoodNode = {
+      name: 'New Child Node',
+      children: [] // If it's a leaf node, keep it empty, otherwise add children as needed
+    };
+    parentNode.children.push(newNode);
+    console.log(this.dataSource.data)
 
+    // Update the data source
+    this.dataSource.data = [...this.dataSource.data];
   }
+
 }

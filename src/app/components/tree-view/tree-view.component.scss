@@ -61,3 +61,15 @@
     text-overflow: ellipsis!important;
     white-space: nowrap!important;
   }
+
+  .add_icon{
+    visibility: hidden;
+  }
+  
+  
+  .item_node:hover {
+    .add_icon{
+      visibility: visible;
+    }
+  }
+  
