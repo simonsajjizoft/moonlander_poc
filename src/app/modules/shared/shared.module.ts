@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TreeDynamicComponent } from 'src/app/components/tree-dynamic/tree-dynamic.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TreeDragDropComponent } from 'src/app/components/tree-drag-drop/tree-drag-drop.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     CardViewComponent,
     ColumnResizeDirective,
     TreeDynamicComponent,
+    TreeDragDropComponent
     
   ],
   imports: [
@@ -60,7 +62,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatIconModule,
     MatButtonModule,
     TreeDynamicComponent,
-    MatProgressBarModule
+    MatProgressBarModule,
+    TreeDragDropComponent
   ]
 })
 export class SharedModule { }

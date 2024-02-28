@@ -42,8 +42,10 @@
             <div class="resize-handle-right hover:border-r-4 hover:border-l-2 hover:border-slate-200 border-slate-300 border-r-4 border-l-2  -mr-1 "
                 mwlResizeHandle [resizeEdges]="{ right: true }"></div>
             <div class="overflow-hidden -z-10 text-sm font-medium py-4 px-4">
-                <app-tree-view></app-tree-view>
+                <!-- <app-tree-view></app-tree-view> -->
                 <!-- <tree-dynamic></tree-dynamic> -->
+                <app-tree-drag-drop></app-tree-drag-drop>
+                
             </div>
         </div>
         <div class="  px-3 resize-x bg-white overflow-hidden" [ngSwitch]="layoutView.view" style="flex:1">

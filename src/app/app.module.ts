@@ -12,6 +12,7 @@ import { ListViewComponent } from './components/list-view/list-view.component';
 import { DetailViewComponent } from './components/detail-view/detail-view.component';
 import { CardViewComponent } from './components/card-view/card-view.component';
 import { ColumnResizeDirective } from './directives/column-resize.directive';
+import { TreeDragDropComponent } from './components/tree-drag-drop/tree-drag-drop.component';
 
 @NgModule({
   declarations: [
