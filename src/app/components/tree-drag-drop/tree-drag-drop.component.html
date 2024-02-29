@@ -15,13 +15,13 @@
     </div>
   </mat-tree-node>
 
-  <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding matTreeNodePaddingIndent="20">
+  <!-- <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding matTreeNodePaddingIndent="20">
     <button mat-icon-button disabled class="toggle-btn"></button>
     <mat-form-field class="outline-none ">
       <input matInput #itemValue placeholder="New item..." class="outline-none ">
     </mat-form-field>
     <button mat-button (click)="saveNode(node, itemValue.value)">Save</button>
-  </mat-tree-node>
+  </mat-tree-node> -->
 
   <mat-tree-node *matTreeNodeDef="let node; when: hasChild " matTreeNodePadding matTreeNodePaddingIndent="20">
     <button mat-icon-button  class="inner-mat-button" (click)="appendNewChildren('',node,treeControl.isExpanded(node))" >
@@ -41,10 +41,10 @@
           [src]="treeControl.isExpanded(node) ? 'assets/icons/folder.png': 'assets/icons/closed-folder.png'"
           class="w-full h-full opacity-90" srcset=""></div>
       <div class="t-o-ellipsis ">{{node?.item}}</div>
-      <div (click)="addNewItem(node)" class="flex items-center add_icon"> <mat-icon
+      <!-- <div (click)="addNewItem(node)" class="flex items-center add_icon"> <mat-icon
           class="text-sm cursor-pointer leading-7 text-gray-400 p-0 w-4 h-4 font-medium">
           note_add
-        </mat-icon></div>
+        </mat-icon></div> -->
     </div>
   </mat-tree-node>
 </mat-tree>
